@@ -1,12 +1,14 @@
 FROM centos:7
 MAINTAINER mrsiegfried
 
-RUN  yum update -y    \
-     && yum clean all  \
-     && yum install --nogpgcheck -y \
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo \
+    && sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo \
+    && yum update -y \
+    && yum clean all \
+    && yum install --nogpgcheck -y \
         unzip man
 
-RUN rpm -ivh http://kb.unavco.org/kb/assets/744/runpkr00-5.40-1trmb.i586.rpm
+RUN rpm -ivh https://kb.unavco.org/file.php?id=618
 
 RUN mkdir /teqc \
     && cd /teqc  \
